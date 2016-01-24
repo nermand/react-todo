@@ -10,18 +10,22 @@
 	var TodoPage = React.createClass({
 
 		getTodoData: function(cb) {
-			$.get(ApiConstants.uri + 'todos', function(res) {
+			$.get(ApiConstants.uri + 'todos')
+				.done((res) => {
 
-				var todos = res.map((t) => {
-					return {
-						id: t.id,
-						title: t.title,
-						description: t.dueDate
-					};
+					var todos = res.map((t) => {
+						return {
+							id: t.id,
+							title: t.title,
+							description: t.dueDate
+						};
+					});
+
+					cb(todos);
+				})
+				.fail((error) => {
+					console.error('Error on retrieving todos list', error);
 				});
-
-				cb(todos);
-			});
 		},
 
 		getInitialState: function() {
